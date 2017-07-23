@@ -1,2 +1,2 @@
-# CSS-project-4-image-gallery
-Pure CSS image gallery
+# Pure CSS Image Gallery
+Five images worked up all fancy-like. No JS allowed.
