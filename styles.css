@@ -1,0 +1,109 @@
+body {
+	background-color: #bbbaa0;
+	margin: 0;
+	position: relative;
+	overflow: hidden;
+	height: 100%; /* Need this for Firefox, where top: 50%; doesn't work otherwise, i.e. w/o some kind of height on the parent! */
+}
+
+input {
+	display: none;
+}
+
+div {
+	width: 800px;
+	height: 570px;
+	margin: 0 auto;
+	text-align: center;
+	font-size: 0;	/* Eliminates inherent gap b/w images */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); /* Centering a block-level element of unknown height */
+	box-shadow: 5px 5px 30px rgba(0,0,0,0.8);
+}
+
+figure {
+	display: inline-block;
+	margin: 0;
+}
+
+/* When unchecked, caption loses all opacity over 1.2 seconds */
+figcaption {
+	font-size: 18px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	/*visibility: hidden;*/
+	background-color: white;
+	opacity: 0;
+	padding: 8px;
+	margin: 10px;
+	font-family: "Cormorant Infant", sans-serif;
+	transition: opacity 1.2s ease/*, visibility 0s ease 1.2s*/;
+}
+
+label:last-of-type figure figcaption { /* B/c its original position is relative to the absolutely positioned 5th image in its minimized form */
+	transform: translate(-200px, 142px);
+}
+
+img, label {
+	width: 400px;
+	height: 285px;
+	margin: 0;
+	cursor: pointer;
+}
+
+img {
+	transition: transform 1s ease, opacity 0.05s ease;
+	transition-delay: 0s, 1s; /* One-second delay on re-becoming opaque, to wait for other image to minimize first */
+	backface-visibility: hidden; /* This is insanely weird, but it's needed to eliminate weird blurring on 1st image in Chrome!! Buhhh?? */
+}
+
+label { /* Label also needs one-second delay on re-becoming opaque */
+	transition: opacity 0.05s ease;
+	transition-delay: 1s;
+}
+
+label:nth-of-type(1) img {
+	transform-origin: left top;
+}
+
+label:nth-of-type(2) img {
+	transform-origin: right top;
+}
+
+label:nth-of-type(3) img {
+	transform-origin: left bottom;
+}
+
+label:nth-of-type(4) img {
+	transform-origin: right bottom;
+}
+
+#final {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-shadow: 0 0 20px rgba(0,0,0,0.8);
+}
+
+input:checked + label img {
+	transform: scale(2);
+}
+
+/* When checked, caption regains opacity over 1.2 seconds */
+input:checked + label figure figcaption {
+	/*visibility: visible;*/
+	opacity: 0.9;
+	transition: opacity 1.2s ease/*, visibility 0s ease 0s*/;
+}
+
+/* As input is checked, transition image opacity to 0 using 0.1s transition time */
+/* Otherwise (i.e. as input is unchecked), use 1.1s transition time for opacity, as specified in "img" type selector above */
+input:not(#img5):checked ~ #final, input:not(#img5):checked ~ #final img {
+	transition: opacity 0.1s ease;
+	opacity: 0;
+	visibility: hidden; /* Make 5th image transparent to clicks when it hides as another image is enlarged */
+}
